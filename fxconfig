@@ -1,9 +1,8 @@
 #!/bin/bash
-# Version 0.5.2
+# Version 1.0
 # Configuration of Firefox, this script will determine how browser will be looking before and after being in sandbox
 #
 
-# to clean source /var/tmp/.fxvar
 
 # Include variables needed by this script
 if [ -w ~/.fxvar ] # TO DO 
