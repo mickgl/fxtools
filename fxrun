@@ -1,11 +1,10 @@
 #!/bin/bash
 #
-# Version 0.5.2
+# Version 1.0
 # Run pre-configured Firefox using firejail, always checking if your profile or Firefox executable has not been compromised.
 # Feel free to change firejail arguments exept --overlay-tmpfs, that one is needed for FXRun to work properly. 
 #
 
-# to clean source /var/tmp/.fxvar
 
 # Include variables needed by this script
 if [ -w ~/.fxvar ]
