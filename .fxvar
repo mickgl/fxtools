@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Version 1.0
+# This file contains all variables which are needed by main tool.
+# 
+
+FXLOCATION=/usr/bin/firefox
+PROFILEDIR=~/.mozilla/firefox
+FXBINDIR=/usr/bin
+FXSUMSDIR=~/.fxsums
+PROFILESUM=$FXSUMSDIR/profilesums
+FXSUM=$FXSUMSDIR/fxsums
