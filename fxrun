@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+# Version 0.5.2
+# Run pre-configured Firefox using firejail, always checking if your profile or Firefox executable has not been compromised.
+# Feel free to change firejail arguments exept --overlay-tmpfs, that one is needed for FXRun to work properly. 
+#
+
+# to clean source /var/tmp/.fxvar
+
+# Include variables needed by this script
+if [ -w ~/.fxvar ]
+then
+	source ~/.fxvar
+else 
+	zenity --warning --title="FXRun" --text="Could not find .fxvar, check your FXTools installation"
+	exit 1
+fi
+
+# Verify intergrity of profile
+sha256sum -c --quiet $PROFILESUM
+
+# Abort if checksum is not valid
+if [ $? != 0 ]
+then
+	zenity --warning --title="FXRun" --text="Your profile has been changed since last run, and may be compromised!"
+	exit 1
+fi
+
+# Verify integrity of Firefox executable
+sha256sum -c --quiet $FXSUM
+
+# Abort if checksum is not valid
+if [ $? != 0 ]
+then
+	zenity --warning --title="FXRun" --text="Your Firefox executable has been changed since last run, and may be compromised!"
+	exit 1
+else
+	firejail --overlay-tmpfs firefox -P $profilename
+fi

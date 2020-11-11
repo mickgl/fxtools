@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=FXRun
+Comment=A simple tool to run sandboxed Firefox
+Exec=fxrun
+Terminal=false
+Icon=fxtools
+Type=Application
+Categories=Utility;WebBrowser;
+Keywords=web;browser;sandbox;

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=FXConfig
+Comment=A simple tool to configure Firefox profile
+Exec=fxconfig
+Terminal=false
+Icon=fxtools
+Type=Application
+Categories=Utility;WebBrowser;
+Keywords=web;browser;sandbox;

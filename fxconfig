@@ -1,0 +1,70 @@
+#!/bin/bash
+# Version 0.5.2
+# Configuration of Firefox, this script will determine how browser will be looking before and after being in sandbox
+#
+
+# to clean source /var/tmp/.fxvar
+
+# Include variables needed by this script
+if [ -w ~/.fxvar ] # TO DO 
+then
+	source ~/.fxvar
+else
+	cp /var/tmp/.fxvar ~/.fxvar
+	if [ -w ~/.fxvar ]
+	then
+		source ~/.fxvar
+	else
+		zenity --warning --title="FXConfig" --text="Could not find .fxvar, check your FXTools installation"
+		exit 1
+	fi
+fi
+
+# Create all necessary directories
+if [ -d $FXSUMSDIR ]
+then
+	rm $FXSUMSDIR/profilesums
+	rm $FXSUMSDIR/fxsums
+	touch $FXSUMSDIR/profilesums
+	touch $FXSUMSDIR/fxsums
+else
+	mkdir -p $FXSUMSDIR
+	touch $FXSUMSDIR/profilesums
+	touch $FXSUMSDIR/fxsums
+fi
+
+# Check if Firefox installation exist and run profile configuration
+if [ -x $FXLOCATION ]
+then 			     # Important info to all packagers:
+	rm -rf $PROFILEDIR/* # Allways be sure that path to .fxvar is correct, otherwise script will remove everything (ofc. depends on user permissions).
+	profilename=$(zenity --entry --title="FXConfig" --text="Please enter new profile name: ")
+	echo "PROFILENAME=$profilename" >> ~/.fxvar
+	zenity --info --title="FXConfig" --window-icon=/usr/share/icons/hicolor/48x48/apps/fxtools.png --text="Now, let's jump into browser and configure it as you want (for e.g. add add-on's, get your bookmarks and cookies form websites that are necessary for you)."
+	firefox -CreateProfile $profilename
+	firefox -P $profilename
+	sha256sum $PROFILEDIR/*.$profilename/* >> $PROFILESUM # Just example for future checksum.sh
+	sha256sum $FXLOCATION >> $FXSUM # Make it part of checksum.sh in future
+else 
+	zenity --warning --title="FXConfig" --text="Firefox is not installed, please install it before running this script."
+	exit 1
+fi
+
+# checksum.sh will be part of this script in future for now we stay with basic checksums verifying
+#
+# Check if checksum.sh is installed and run it if yes
+# if [ -x $FXTOOLSDIR/checksum.sh ]
+# then
+#	./checksum.sh
+# else
+#	echo "Could not find checksum.sh, please check integrity of your FXTools installation."
+#	exit 1
+# fi
+
+# Check if fxrun.sh is installed
+if [ -x $FXBINDIR/fxrun ]
+then 
+	zenity --info --title="FXConfig" --window-icon=/usr/share/icons/hicolor/48x48/apps/fxtools.png --text="Your profile is ready to use! Now just let's start browsing by runing FXRun."
+else
+	zenity --warning --title="FXConfig" --text="Could not find fxrun.sh, please check integrity of your FXTools installation."
+	exit 1
+fi
